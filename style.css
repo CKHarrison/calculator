@@ -19,3 +19,38 @@ body {
 h1 {
   font-weight: 700;
 }
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  gap: .5em;
+  align-items: center;
+  justify-content: center;
+}
+
+.item {
+  border: 1px solid black;
+  padding: .5em;
+  text-align: center;
+  font-size: 2rem;
+  align-self: center;
+}
+
+.item-number:hover {
+  background-color: black;
+  color: white;
+}
+
+.item-number:active {
+  background-color: black;
+  color: white;
+  transform: translateY(4px);
+  box-shadow: 0 2px #666;
+}
+
+.total {
+  grid-column: 1/5;
+  grid-row: 0/1;
+  text-align: center;
+}
