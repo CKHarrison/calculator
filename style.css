@@ -23,7 +23,7 @@ h1 {
 .container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(5, 1fr);
+  grid-template-rows: repeat(6, 1fr);
   gap: .5em;
   align-items: center;
   justify-content: center;
@@ -53,4 +53,9 @@ h1 {
   grid-column: 1/5;
   grid-row: 0/1;
   text-align: center;
+}
+
+.clear {
+  grid-column: 2/4;
+  grid-row: 6;
 }
