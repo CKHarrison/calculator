@@ -37,12 +37,12 @@ h1 {
   align-self: center;
 }
 
-.item-number:hover {
+.item-interact:hover {
   background-color: black;
   color: white;
 }
 
-.item-number:active {
+.item-interact:active {
   background-color: black;
   color: white;
   transform: translateY(4px);
