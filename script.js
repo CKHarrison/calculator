@@ -13,7 +13,7 @@ function multiply(a, b) {
 function divide(a, b) {
   if(b === 0) {
     alert('cannot divide by 0');
-      return;
+      return null;
   }
   return a / b;
 }
@@ -49,6 +49,8 @@ let equation = document.querySelector('.running-total');
  let secondNumber = [];
  let total = 0;
  let runningTotal = [];
+ equation.innerHTML = '0';
+ point.disabled = true;
 
 
 function resetCalculator(){
@@ -104,6 +106,10 @@ buttons.forEach(button => button.addEventListener('click', () => {
           console.log(`before calculation: total: ${total} secondNumber: ${secondNumber}`);
           console.log(`second number converted: ${secondNumber.join('')}`)
           total = operate(operator, total, parseFloat(secondNumber.join('')));
+          if(total === null) {
+            display.innerText = 'Cannot divide by 0: press clear';
+            return;
+          }
           console.log(`after calculation: total: ${total} secondNumber: ${secondNumber}`);
           display.innerHTML = total;
           runningTotal.push(secondNumber.join(''));
@@ -129,10 +135,6 @@ buttons.forEach(button => button.addEventListener('click', () => {
 // clear button
 clearBtn.addEventListener('click', ()=> clear());
 
-
-
-
-
 // Control operations
 operators.forEach(operator => operator.addEventListener('click', ()=> {
   if(operator) {
@@ -156,16 +158,16 @@ operators.forEach(operator => operator.addEventListener('click', ()=> {
           firstNumber = null;
           secondNumber = [];
           operator = null;
+          runningTotal = [];
+          equation.innerText = 0;
           break;
         } else {
           break;
         }
       default:
         break;
-
     }
   }
-
 }))
 
 

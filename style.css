@@ -1,5 +1,6 @@
 :root {
   box-sizing: border-box;
+  --display-background: #666;
 }
 
 *, *:before, *::after {
@@ -9,7 +10,6 @@
 body {
   max-width: 1200px;
   margin: 0 auto;
-  border: 1px solid black;
   display: flex; 
   flex-direction: column;
   align-items: center;
@@ -26,11 +26,16 @@ button {
 
 .container {
   display: grid;
+  background-color: rgb(164, 24, 177);
+  border: 1px solid black;
+  border-radius: .5em;
+  padding: .5em;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(7, 1fr);
   gap: .5em;
   align-items: center;
   justify-content: center;
+  
 }
 
 .item,
@@ -56,17 +61,38 @@ button {
 }
 
 .running-total {
+  background-color: var(--display-background);
+  border-bottom: none;
+  color: white;
+  font-size: 1.4rem;
   grid-column: 1/5;
   grid-row: 1/2;
+  border-bottom: none;
+  margin-bottom: -50px;
+  text-align: right;
+  padding: 1em;
+ 
 }
 
 .total {
+  border-top: none;
+  background-color: var(--display-background);
+  color: white;
   grid-column: 1/5;
   grid-row: 2/3;
   text-align: center;
 }
 
 .clear {
+  background-color: rgba(215, 90, 36, 0.982);;
   grid-column: 2/4;
-  grid-row: 6;
+  grid-row: 7;
+}
+
+.number {
+  background-color: rgb(28, 136, 107);
+}
+
+.operator {
+  background-color: rgb(24, 149, 177);
 }
