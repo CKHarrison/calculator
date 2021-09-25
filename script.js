@@ -18,130 +18,151 @@ function divide(a, b) {
   return a / b;
 }
 
-function operate(func, a ,b){
-  result = func(parseInt(a),parseInt(b));
-  return result;
+function operate(operator, a ,b){
+  switch(operator) {
+    case '&#247;':
+      total = divide(a, b);
+      break;
+    case '*':
+      total = multiply(a, b);
+      break;
+    case '-':
+      total = subtract(a, b);
+      break;
+    case '+':
+      total = add(a,b);
+      break;
+  }
+  return total;
 }
 
 // Button information
+const buttons = document.querySelectorAll('button');
 const numbers = document.querySelectorAll('.number');
-const display = document.querySelector('.total');
-const addOp = document.querySelector('.add');
-const subtractOp = document.querySelector('.subtract');
-const multiplyOp = document.querySelector('.multiply');
-const divideOp = document.querySelector('.divide');
-const equalOp = document.querySelector('.equals');
-const clearButton = document.querySelector('.clear');
+let display = document.querySelector('.total');
+const operators = document.querySelectorAll('.operator');
+const point = document.querySelector('.point');
+const clearBtn = document.querySelector('.clear');
+let equation = document.querySelector('.running-total');
+ let operator;
+ let firstNumber = null;
+ let secondNumber = [];
+ let total = 0;
+ let runningTotal = [];
 
-const allButtons = document.querySelectorAll('.item-interact');
-
-let currentNumber = '';
-
-const calculator = {
-  displayValue:'',
-  firstOperation: null,
-  waitingForSecondOperation: null,
-  operator: null,
-  total: 0,
-  checkAlreadyOperated: false
-  
-}
 
 function resetCalculator(){
-  calculator.displayValue = '';
-  calculator.firstOperation = null;
-  calculator.waitingForSecondOperation = null;
-  calculator.operator = null;
-  calculator.total = 0;
-  calculator.checkAlreadyOperated = false;
+  firstNumber = null;
+  secondNumber = [];
+  operator = null;
+  total = 0;
+  displayValue = '';
+  runningTotal = []
 }
 
-// show display
-function showDisplay(displayValue) {
-  display.textContent = displayValue;
-}
 
 function clear() {
   resetCalculator();
-  calculator.total = 0;
-  showDisplay('0');
+  total = 0;
+  display.textContent = 0;
+  equation.textContent = 0;
+  point.disabled = false;
   console.log(`Clearing calculator`);
 }
 
 
-// check number press
-numbers.forEach(number => {
-  number.addEventListener('click', () => {
-    if(!calculator.operator) {
-      calculator.displayValue += number.textContent;
-      showDisplay(calculator.displayValue);
-      calculator.firstOperation = calculator.displayValue;
-    }  else {
-
-      // first time around
-      calculator.displayValue += number.textContent;
-      showDisplay(calculator.displayValue)
-      calculator.waitingForSecondOperation = calculator.displayValue;
-     
-      console.log(calculator)
-
-
-    }
-  });
-});
-
-// ADD BUTTON
-addOp.addEventListener('click', () => {
-  if(calculator.waitingForSecondOperation) {
-    if(calculator.checkAlreadyOperated) {
-      calculator.total = operate(add, calculator.total, calculator.waitingForSecondOperation);
-      showDisplay(calculator.total);
-      calculator.waitingForSecondOperation = null;
-      calculator.displayValue = '';
-      console.log(calculator);
+// control numbers
+buttons.forEach(button => button.addEventListener('click', () => {
+  // if total exists make sure to only calculate on total 
+    if(Array.from(button.classList).includes('number')) {
+      if(total !== 0) {
+    // get end of running total
+    secondNumber.push(button.innerText);
+    console.log(`Second number: ${secondNumber}`);
+    display.innerHTML = secondNumber.join('');
     } else {
-      calculator.total += operate(add, calculator.firstOperation, calculator.waitingForSecondOperation);
-      showDisplay(calculator.total);
-      calculator.waitingForSecondOperation = null;
-      calculator.displayValue = '';
-      calculator.checkAlreadyOperated = true;
-      console.log(calculator);
+      if (Array.from(button.classList).includes('number')) {
+        runningTotal.push(button.innerText);
+        console.log(runningTotal)
+        equation.innerHTML = runningTotal.join('');
+        if (Array.from(button.classList).includes('point')) {
+          point.disabled = true;
+        }
+      }
     }
   } else {
-    if (!calculator.operator) {
-      calculator.operator = add;
-      calculator.displayValue = "";
-      console.log(calculator);
-    } else if (calculator.operator === add) {
-      return;
+      if (Array.from(button.classList).includes('operator')) {
+        // If there is nothing in running total, do nothing
+        // if(runningTotal.length === 0 || runningTotal[runningTotal.length -1]=== '.') {
+        //   return;
+        // }
+        //TODO
+        // MAKE IT SO IF THERE IS AN OPERATOR AT END OF LIST, ONLY CHANGE THE THE OPERATOR
+        // THEN NEED TO ADD TOTAL TO NEXT NUMBER UP ABOVE DO IT DYNAMICALLY LIKE THE ODIN EXAMPLE
+        if (secondNumber.length > 0) {
+          console.log(`before calculation: total: ${total} secondNumber: ${secondNumber}`);
+          total = operate(operator, total, parseFloat(secondNumber.join()));
+          console.log(`after calculation: total: ${total} secondNumber: ${secondNumber}`);
+          display.innerHTML = total;
+          runningTotal.push(secondNumber.join(''));
+          console.log(runningTotal);
+          operator = button.value;
+          runningTotal.push(operator);
+          equation.innerHTML = runningTotal.join('');
+          secondNumber = [];
+        } else {
+          runningTotal.push(button.value);
+          equation.innerHTML = runningTotal.join('');
+          total = parseFloat(runningTotal.slice(0, -1).join(''));
+          operator = runningTotal[runningTotal.length - 1];
+          console.log(`total is ${total} which is a ${typeof (total)}`);
+          console.log(`operator: ${operator}`);
+          console.log('running total', runningTotal);
+        }
+
+      }
     }
+}));
+
+// clear button
+clearBtn.addEventListener('click', ()=> clear());
+
+
+
+
+
+// Control operations
+operators.forEach(operator => operator.addEventListener('click', ()=> {
+  switch(operator.innerText) {
+   
+    case '&#247;':
+      operator = divide;
+      break;
+    case '*':
+      operator = multiply;
+      break;
+    case '-':
+      operator = subtract;
+      break;
+    case '+':
+      operator = add;
+      break;
+    case '=':
+      if(operator) {
+        display.innerText = parseFloat(operate(operator, firstNumber, secondNumber)).toFixed(2);
+        firstNumber = null;
+        secondNumber = [];
+        operator = null;
+        break;
+      } else {
+        break;
+      }
+    default:
+      break;
+
   }
-  
- 
-});
 
-subtractOp.addEventListener('click', () => {
-  
-});
-
-multiplyOp.addEventListener('click', () => {
-  calculator.operator = multiply;
-  calculator.displayValue = "";
-  console.log(calculator);
-});
-
-divideOp.addEventListener('click', () => {
-  calculator.operator = divide;
-  calculator.displayValue = "";
-  console.log(calculator);
-});
-
-equalOp.addEventListener('click', () => {
-  
-  
-})
-
-clearButton.addEventListener('click', () => clear());
+}))
 
 
 

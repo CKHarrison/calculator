@@ -20,17 +20,23 @@ h1 {
   font-weight: 700;
 }
 
+button {
+  background-color: white;
+}
+
 .container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(6, 1fr);
+  grid-template-rows: repeat(7, 1fr);
   gap: .5em;
   align-items: center;
   justify-content: center;
 }
 
-.item {
+.item,
+.item:disabled {
   border: 1px solid black;
+  color: black;
   padding: .5em;
   text-align: center;
   font-size: 2rem;
@@ -49,9 +55,14 @@ h1 {
   box-shadow: 0 2px #666;
 }
 
+.running-total {
+  grid-column: 1/5;
+  grid-row: 1/2;
+}
+
 .total {
   grid-column: 1/5;
-  grid-row: 0/1;
+  grid-row: 2/3;
   text-align: center;
 }
 
