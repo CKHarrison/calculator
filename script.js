@@ -102,7 +102,8 @@ buttons.forEach(button => button.addEventListener('click', () => {
         // THEN NEED TO ADD TOTAL TO NEXT NUMBER UP ABOVE DO IT DYNAMICALLY LIKE THE ODIN EXAMPLE
         if (secondNumber.length > 0) {
           console.log(`before calculation: total: ${total} secondNumber: ${secondNumber}`);
-          total = operate(operator, total, parseFloat(secondNumber.join()));
+          console.log(`second number converted: ${secondNumber.join('')}`)
+          total = operate(operator, total, parseFloat(secondNumber.join('')));
           console.log(`after calculation: total: ${total} secondNumber: ${secondNumber}`);
           display.innerHTML = total;
           runningTotal.push(secondNumber.join(''));
@@ -134,33 +135,35 @@ clearBtn.addEventListener('click', ()=> clear());
 
 // Control operations
 operators.forEach(operator => operator.addEventListener('click', ()=> {
-  switch(operator.innerText) {
-   
-    case '/':
-      operator = divide;
-      break;
-    case '*':
-      operator = multiply;
-      break;
-    case '-':
-      operator = subtract;
-      break;
-    case '+':
-      operator = add;
-      break;
-    case '=':
-      if(operator) {
-        display.innerText = parseFloat(operate(operator, firstNumber, secondNumber)).toFixed(2);
-        firstNumber = null;
-        secondNumber = [];
-        operator = null;
-        break;
-      } else {
-        break;
-      }
-    default:
-      break;
+  if(operator) {
+    switch (operator.innerText) {
 
+      case '/':
+        operator = divide;
+        break;
+      case '*':
+        operator = multiply;
+        break;
+      case '-':
+        operator = subtract;
+        break;
+      case '+':
+        operator = add;
+        break;
+      case '=':
+        if (operator) {
+          display.innerText = parseFloat(operate(operator, firstNumber, secondNumber.join(''))).toFixed(2);
+          firstNumber = null;
+          secondNumber = [];
+          operator = null;
+          break;
+        } else {
+          break;
+        }
+      default:
+        break;
+
+    }
   }
 
 }))
