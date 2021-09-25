@@ -20,7 +20,7 @@ function divide(a, b) {
 
 function operate(operator, a ,b){
   switch(operator) {
-    case '&#247;':
+    case '/':
       total = divide(a, b);
       break;
     case '*':
@@ -71,7 +71,7 @@ function clear() {
 }
 
 
-// control numbers
+// NUMBERS
 buttons.forEach(button => button.addEventListener('click', () => {
   // if total exists make sure to only calculate on total 
     if(Array.from(button.classList).includes('number')) {
@@ -90,12 +90,13 @@ buttons.forEach(button => button.addEventListener('click', () => {
         }
       }
     }
+    // ARITHMETIC
   } else {
       if (Array.from(button.classList).includes('operator')) {
         // If there is nothing in running total, do nothing
-        // if(runningTotal.length === 0 || runningTotal[runningTotal.length -1]=== '.') {
-        //   return;
-        // }
+        if(runningTotal.length === 0 || runningTotal[runningTotal.length -1]=== '.') {
+          return;
+        }
         //TODO
         // MAKE IT SO IF THERE IS AN OPERATOR AT END OF LIST, ONLY CHANGE THE THE OPERATOR
         // THEN NEED TO ADD TOTAL TO NEXT NUMBER UP ABOVE DO IT DYNAMICALLY LIKE THE ODIN EXAMPLE
@@ -135,7 +136,7 @@ clearBtn.addEventListener('click', ()=> clear());
 operators.forEach(operator => operator.addEventListener('click', ()=> {
   switch(operator.innerText) {
    
-    case '&#247;':
+    case '/':
       operator = divide;
       break;
     case '*':
