@@ -43,6 +43,7 @@ const calculator = {
   waitingForSecondOperation: null,
   operator: null,
   total: 0,
+  checkAlreadyOperated: false
   
 }
 
@@ -51,6 +52,8 @@ function resetCalculator(){
   calculator.firstOperation = null;
   calculator.waitingForSecondOperation = null;
   calculator.operator = null;
+  calculator.total = 0;
+  calculator.checkAlreadyOperated = false;
 }
 
 // show display
@@ -90,11 +93,20 @@ numbers.forEach(number => {
 // ADD BUTTON
 addOp.addEventListener('click', () => {
   if(calculator.waitingForSecondOperation) {
-    calculator.total += operate(add, calculator.firstOperation, calculator.waitingForSecondOperation);
-    showDisplay(calculator.total);
-    calculator.waitingForSecondOperation = null;
-    calculator.displayValue = '';
-    console.log(calculator);
+    if(calculator.checkAlreadyOperated) {
+      calculator.total = operate(add, calculator.total, calculator.waitingForSecondOperation);
+      showDisplay(calculator.total);
+      calculator.waitingForSecondOperation = null;
+      calculator.displayValue = '';
+      console.log(calculator);
+    } else {
+      calculator.total += operate(add, calculator.firstOperation, calculator.waitingForSecondOperation);
+      showDisplay(calculator.total);
+      calculator.waitingForSecondOperation = null;
+      calculator.displayValue = '';
+      calculator.checkAlreadyOperated = true;
+      console.log(calculator);
+    }
   } else {
     if (!calculator.operator) {
       calculator.operator = add;
